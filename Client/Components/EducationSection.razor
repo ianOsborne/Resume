@@ -1,0 +1,30 @@
+﻿@using ResumeWebsite.Shared;
+<h3 class="block-title">Education</h3>
+<div class="timeline education">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="exp-holder">
+                @foreach (var education in Educations)
+                {
+                    <div class="exp">
+                        <div class="hgroup">
+                            <h4>@education.DegreePath | <span>@education.Institution</span></h4>
+                            <h5>@education.DateRange</h5>
+                        </div>
+                        <p>@education.Description</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    private IEnumerable<Education> Educations = new List<Education>()
+    {
+        new Education("Greater Knox Coding Academy","Elizabethtown Community and Technical College",
+        "Here I learned the very foundations of object oriented programming, Java development, Scrum and Agile, and I was given real world projects to work on all throughout the curriculum.","Nov 2019 - May 2020"),
+        new Education("Associates of Science","Elizabethtown Community and Technical College",
+        "I was given the chance to take dual credit courses while in high school, and was able to earn my full degree within three semesters.","Aug 2018 - Nov 2019")
+
+    };
+}

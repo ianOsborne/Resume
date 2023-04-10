@@ -1,9 +1,279 @@
 ﻿@page "/"
+@using BlazorComponentUtilities;
+<PageTitle>Ian Osborne</PageTitle>
+<div class="@InlineMenuContainerClass">
+    <span class="status">I am available for freelance</span>
+    <ul class="inline-menu">
+        <li class="about @InLineMenuItemResumeClass" @onclick="() => HandleOnClickResume()">Resume</li>
+        <li class="portfolio @InLineMenuItemPortfolioClass" @onclick="() => HandleOnClickPortfolio()">Portfolio</li>
+        <li class="blog @InLineMenuItemBlogClass" @onclick="() => HandleOnClickAboutMe()">About Me</li>
+        <li class="contact @InLineMenuItemContactClass" @onclick="() => HandleOnClickContact()">Contact</li>
+        <li @onclick="() => HandleOnClickCloseInlineMenu()" class="@MenuItemClass">
+            <Close />
+        </li>
+    </ul>
+</div>
 
-<PageTitle>Index</PageTitle>
+<section class="home">
+    <div class="bgScroll"></div>
+    <div class="overlay opacity7"></div>
+    <div class="container">
+        <div class="@NameBlockClass">
+            <div class="@NameBlockContainerClass">
+                <h1><span>Hi, I'm</span>Ian Osborne</h1>
+                <h2>Full Stack Web Developer</h2>
+                <a target="_blank" href="" class="btn btn-download">Download Resume</a>
+                <ul class="social">
+                    <li>
+                        <GitHub />
+                    </li>
+                    <li>
+                        <LinkedIn />
+                    </li>
+                    <li>
+                        <Facebook />
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="@MenuBlocksClass" @onclick="() => HandleOnClickMenuItems()">
+            <div class="about-block menu-block" @onclick="() => HandleOnClickResume()">
+                <div class="about-block-container">
+                    <h2 class="about @MenuItemClass" @onclick="() => HandleOnClickResume()">Resume</h2>
+                </div>
+            </div>
+            <div class="portfolio-block  menu-block" @onclick="() => HandleOnClickPortfolio()">
+                <div class="portfolio-block-container">
+                    <h2 class="portfolio @MenuItemClass" @onclick="() => HandleOnClickPortfolio()">Portfolio</h2>
+                </div>
+            </div>
+            <div class="blog-block  menu-block" @onclick="() => HandleOnClickAboutMe()">
+                <div class="blog-block-container">
+                    <h2 class="blog @MenuItemClass" @onclick="() => HandleOnClickAboutMe()">About Me</h2>
+                </div>
+            </div>
+            <div class="contact-block  menu-block" @onclick="() => HandleOnClickContact()">
+                <div class="contact-block-container">
+                    <h2 class="contact @MenuItemClass" @onclick="() => HandleOnClickContact()">Contact</h2>
+                </div>
+            </div>
+        </div>
+        <div class="@ContentBlocksResumeClass">
+            @if (ShowResumeSection)
+            {
+                <ResumeSection />
+            }
+        </div>
+        <div class="@ContentBlocksPortfolioClass">
+            @if (ShowPortfolioSection)
+            {
+                <PortfolioSection />
+            }
+        </div>
+        <div class="@ContentBlocksBlogClass">
+            @if (ShowAboutMeSection)
+            {
+                <AboutMeSection />
+            }
+        </div>
+        <div class="@ContentBlocksContactClass">
+            @if (ShowContactSection)
+            {
+                <ContactSection />
+            }
+        </div>
+        <div class="@ContentBlocksClass pop">
+            <div id="close-pop" class="close-pop">Close <i class="ion-ios-close-empty"></i></div>
+            <section class="content"></section>
+        </div>
+    </div>
+</section>
+@code {
+    private string NameBlockClass = "name-block";
+    private string NameBlockContainerClass = "name-block-container";
+    private string MenuBlocksClass = "menu-blocks";
+    private string InlineMenuContainerClass = "inline-menu-container";
+    private string InlineMenuContainerStyle2Class = "inline-menu-container style2";
+    private string ContentBlocksClass = "content-blocks";
+    private string ContentBlocksResumeClass = "content-blocks about";
+    private string ContentBlocksPortfolioClass = "content-blocks portfolio";
+    private string ContentBlocksContactClass = "content-blocks contact";
+    private string ContentBlocksBlogClass = "content-blocks blog";
+    private string MenuItemClass = "menu-item";
+    private string InLineMenuItemResumeClass = "menu-item about";
+    private string InLineMenuItemPortfolioClass = "menu-item portfolio";
+    private string InLineMenuItemContactClass = "menu-item contact";
+    private string InLineMenuItemBlogClass = "menu-item blog";
+    private bool ShowResumeSection;
+    private bool ShowPortfolioSection;
+    private bool ShowAboutMeSection;
+    private bool ShowContactSection;
 
-<h1>Hello, world!</h1>
+    private enum Sections
+    {
+        None = 0,
+        Resume = 1,
+        Portfolio = 2,
+        AboutMe = 3,
+        Contact = 4,
 
-Welcome to your new app.
+    }
+    protected override void OnInitialized()
+    {
+        //nothing to do yet
+    }
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    public void HandleOnClickMenuItems()
+    {
+        NameBlockClass = new CssBuilder(NameBlockClass).AddClass("reverse").Build();
+        NameBlockContainerClass = new CssBuilder(NameBlockContainerClass).AddClass("reverse").Build();
+        MenuBlocksClass = new CssBuilder(MenuBlocksClass).AddClass("hidex").Build();
+        InlineMenuContainerClass = new CssBuilder(InlineMenuContainerClass).AddClass("showx").Build();
+        InlineMenuContainerStyle2Class = new CssBuilder(InlineMenuContainerStyle2Class).AddClass("dark").Build();
+
+    }
+    public void HandleOnClickResume()
+    {
+        SelectSection((int)Sections.Resume);
+        ShowResumeSection = true;
+
+        ContentBlocksResumeClass = new CssBuilder(ContentBlocksResumeClass).AddClass("showx").Build();
+        InLineMenuItemResumeClass = new CssBuilder(InLineMenuItemResumeClass).AddClass("active").Build();
+
+    }
+    public void HandleOnClickPortfolio()
+    {
+        SelectSection((int)Sections.Portfolio);
+        ShowPortfolioSection = true;
+
+        ContentBlocksPortfolioClass = new CssBuilder(ContentBlocksPortfolioClass).AddClass("showx").Build();
+        InLineMenuItemPortfolioClass = new CssBuilder(InLineMenuItemPortfolioClass).AddClass("active").Build();
+
+    }
+    public void HandleOnClickAboutMe()
+    {
+        SelectSection((int)Sections.AboutMe);
+        ShowAboutMeSection = true;
+
+        ContentBlocksBlogClass = new CssBuilder(ContentBlocksBlogClass).AddClass("showx").Build();
+        InLineMenuItemBlogClass = new CssBuilder(InLineMenuItemBlogClass).AddClass("active").Build();
+
+    }
+
+    public void HandleOnClickContact()
+    {
+
+        SelectSection((int)Sections.Contact);
+        ShowContactSection = true;
+
+        ContentBlocksContactClass = new CssBuilder(ContentBlocksContactClass).AddClass("showx").Build();
+        InLineMenuItemContactClass = new CssBuilder(InLineMenuItemContactClass).AddClass("active").Build();
+    }
+
+    public void HandleOnClickCloseInlineMenu()
+    {
+        SelectSection((int)Sections.None);
+
+    }
+    public void SelectSection(int sectionSelection)
+    {
+        ContentBlocksClass = "content-blocks";
+        MenuItemClass = "menu-item";
+        switch (sectionSelection)
+        {
+            case (int)Sections.None:
+
+                NameBlockClass = "name-block";
+                NameBlockContainerClass = "name-block-container";
+                ContentBlocksClass = "content-blocks";
+                MenuBlocksClass = "menu-blocks";
+                InlineMenuContainerClass = "inline-menu-container";
+                MenuItemClass = "menu-item";
+
+                ContentBlocksResumeClass = "content-blocks about";
+                ContentBlocksPortfolioClass = "content-blocks portfolio";
+                ContentBlocksBlogClass = "content-blocks blog";
+                ContentBlocksContactClass = "content-blocks contact";
+
+                InLineMenuItemResumeClass = "menu-item about";
+                InLineMenuItemPortfolioClass = "menu-item portfolio";
+                InLineMenuItemBlogClass = "menu-item blog";
+                InLineMenuItemContactClass = "menu-item contact";
+
+                ShowResumeSection = false;
+                ShowPortfolioSection = false;
+                ShowAboutMeSection = false;
+                ShowContactSection = false;
+
+                break;
+
+            case (int)Sections.Resume:
+
+                ContentBlocksPortfolioClass = "content-blocks portfolio";
+                ContentBlocksBlogClass = "content-blocks blog";
+                ContentBlocksContactClass = "content-blocks contact";
+
+                InLineMenuItemPortfolioClass = "menu-item portfolio";
+                InLineMenuItemBlogClass = "menu-item blog";
+                InLineMenuItemContactClass = "menu-item contact";
+
+                ShowPortfolioSection = false;
+                ShowAboutMeSection = false;
+                ShowContactSection = false;
+
+                break;
+
+            case (int)Sections.Portfolio:
+
+                ContentBlocksResumeClass = "content-blocks about";
+                ContentBlocksBlogClass = "content-blocks blog";
+                ContentBlocksContactClass = "content-blocks contact";
+
+                InLineMenuItemResumeClass = "menu-item about";
+                InLineMenuItemBlogClass = "menu-item blog";
+                InLineMenuItemContactClass = "menu-item contact";
+
+                ShowResumeSection = false;
+                ShowAboutMeSection = false;
+                ShowContactSection = false;
+                break;
+
+            case (int)Sections.AboutMe:
+                ContentBlocksResumeClass = "content-blocks about";
+                ContentBlocksPortfolioClass = "content-blocks portfolio";
+                ContentBlocksContactClass = "content-blocks contact";
+
+                InLineMenuItemResumeClass = "menu-item about";
+                InLineMenuItemPortfolioClass = "menu-item portfolio";
+                InLineMenuItemContactClass = "menu-item contact";
+
+                ShowResumeSection = false;
+                ShowPortfolioSection = false;
+                ShowContactSection = false;
+
+                break;
+
+            case (int)Sections.Contact:
+                ContentBlocksResumeClass = "content-blocks about";
+                ContentBlocksPortfolioClass = "content-blocks portfolio";
+                ContentBlocksBlogClass = "content-blocks blog";
+
+                InLineMenuItemResumeClass = "menu-item about";
+                InLineMenuItemPortfolioClass = "menu-item portfolio";
+                InLineMenuItemBlogClass = "menu-item blog";
+
+                ShowResumeSection = false;
+                ShowPortfolioSection = false;
+                ShowAboutMeSection = false;
+
+                break;
+
+            default:
+
+                break;
+
+        }
+
+    }
+
+}
