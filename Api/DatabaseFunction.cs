@@ -24,7 +24,7 @@ namespace Api
             HttpRequest req,
             [SqlInput(commandText: "SELECT * FROM [SalesLT].[Customer] where CustomerID = 1",
                 parameters: "@Id={Query.id}",
-                connectionStringSetting: "DATABASE_CONNECTION_STRING")]
+                connectionStringSetting: "connection-string")]
             string outputData
             )
         {
