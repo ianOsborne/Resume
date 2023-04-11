@@ -30,7 +30,7 @@ namespace Api
         {
 
             var response = req.CreateResponse(HttpStatusCode.OK);
-            response.WriteAsJsonAsync(outputData);
+            response.WriteString(outputData);
 
             return response;
         }
