@@ -24,7 +24,7 @@ namespace Api
         [Function("DatabaseFunction")]
         public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req,
             [SqlInput(commandText: "SELECT [Name]  FROM [SalesLT].[Product] where ProductID = 680",
-            connectionStringSetting: "connection-string"
+            connectionStringSetting: "AzureSQLConnectionString"
             )]
             string outputData)
         {
