@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker.Extensions.Sql;
+using BlazorApp.Shared;
+using Microsoft.Azure.Functions.Worker.Http;
+using System;
 
 namespace Api
 {
@@ -19,16 +22,17 @@ namespace Api
         }
 
         [Function("DatabaseFunction")]
-        public static string Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
-            HttpRequest req,
-            [SqlInput(commandText: "SELECT * FROM [SalesLT].[Customer] where CustomerID = 1",
-                parameters: "@Id={Query.id}",
-                connectionStringSetting: "connection-string")]
-            string outputData
-            )
+        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req,
+            [SqlInput(commandText: "SELECT [Name]  FROM [SalesLT].[Product] where ProductID = 680",
+            connectionStringSetting: "connection-string"
+            )]
+            string outputData)
         {
-            return outputData;
+
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            response.WriteAsJsonAsync(outputData);
+
+            return response;
         }
     }
 }
