@@ -1,5 +1,8 @@
 ﻿@using ResumeWebsite.Shared;
 @using System.Net.Mail;
+@using System.Net;
+@inject HttpClient Http
+
 <section class="content">
     <div class="block-content">
         <h3 class="block-title">Get in touch</h3>
@@ -46,8 +49,17 @@
 
 @code {
     private ContactMessage contactMessage = new ContactMessage("", "", "");
-    private void HandleValidSubmit()
+    private async Task<string> HandleValidSubmit()
     {
-        //do something
+        try
+        {
+            var content = new {Body = contactMessage};
+            await Http.PostAsJsonAsync("/api/ContactFunction", content);
+            return "Success";
+        }
+        catch (Exception ex)
+        {
+            return "Failure";
+        }
     }
 }
