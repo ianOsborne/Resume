@@ -1,6 +1,7 @@
 ﻿@using ResumeWebsite.Shared;
 @using System.Net.Mail;
 @using System.Net;
+@using System.Text.Json;
 @inject HttpClient Http
 
 <section class="content">
@@ -54,7 +55,7 @@
         try
         {
             var content = new {Body = contactMessage};
-            await Http.PostAsJsonAsync("/api/ContactFunction", content);
+            await Http.PostAsJsonAsync("/api/ContactFunction", JsonSerializer.Serialize<ContactMessage>(contactMessage));
             return "Success";
         }
         catch (Exception ex)
