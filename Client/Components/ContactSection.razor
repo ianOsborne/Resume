@@ -2,6 +2,7 @@
 @using System.Net.Mail;
 @using System.Net;
 @using System.Text.Json;
+@using System.Net.Http.Headers;
 @inject HttpClient Http
 
 <section class="content">
@@ -57,13 +58,22 @@
 @code {
     private ContactMessage contactMessage = new ContactMessage("", "", "");
     string LastSubmitResult;
+    private EditContext? editContext;
 
+    protected override void OnInitialized()
+    {
+        editContext = new(contactMessage);
+    }
     private async Task<string> HandleValidSubmit(EditContext editContext)
     {
         try
         {
-            var content = new {Body = contactMessage};
-            await Http.PostAsJsonAsync("/api/ContactFunction", JsonSerializer.Serialize<ContactMessage>(contactMessage));
+            var content = JsonSerializer.Serialize(editContext.Model);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(content);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            await Http.PostAsync("/api/ContactFunction", byteContent);
             ValidFormSubmitted(editContext);
             return "Success";
         }
@@ -82,4 +92,5 @@
     {
         LastSubmitResult = "OnInvalidSubmit was executed";
     }
+    
 }
