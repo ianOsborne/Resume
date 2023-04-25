@@ -36,16 +36,18 @@ namespace ApiIsolated
             {
                 throw new ArgumentNullException("Contact Message was null :(");
             }
-            SmtpClient smtpClient = new SmtpClient("smtp.ionos.com");
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+            {
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential("ianosborne.dev@gmail.com", Environment.GetEnvironmentVariable("MailPassword")),
+            };
             MailMessage message = new MailMessage();
-            message.From = new MailAddress(contactMessage.Email);
+            message.From = new MailAddress("ianosborne.dev@gmail.com");
             message.To.Add("mail@ianosborne.dev");
-            message.Body = contactMessage.Name + " says " + contactMessage.Message;
+            message.Body = contactMessage.Name + " " + contactMessage.Email + " " + contactMessage.Message;
             message.Subject = "Resume Website Contact";
-            smtpClient.Port = 465;
-            smtpClient.EnableSsl = true;
-            smtpClient.Credentials = new NetworkCredential("mail@ianosborne.dev", Environment.GetEnvironmentVariable("MailPassword"));
-            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtpClient.Send(message);
         }
 
