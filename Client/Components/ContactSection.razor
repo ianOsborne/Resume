@@ -10,20 +10,27 @@
         <h3 class="block-title">Get in touch</h3>
         <div class="row">
             <div class="col-md-6">
-                <EditForm Model="@contactMessage" OnValidSubmit="@HandleValidSubmit" class="contact-form bv-form" id="contact_form">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <div class="form-group has-feedback">
-                        <InputText class="form-control" id="fname" placeholder="Name*" @bind-Value="contactMessage.Name" />
-                    </div>
-                    <div class="form-group mar-top-40 has-feedback">
-                        <InputText class="form-control" id="email" placeholder="Email*" @bind-Value="contactMessage.Email" />
-                    </div>
-                    <div class="form-group mar-top-60 has-feedback">
-                        <InputTextArea rows="10" class="form-control" id="comment" placeholder="Your Message" data-bv-field="comment" @bind-Value="contactMessage.Message" />
-                    </div>
-                    <button type="submit" class="btn v7">Submit</button>
-                </EditForm>
+                @if (messageSent)
+                {
+                    <h2>Thank you, your message has been received.</h2>
+                }
+                else
+                {
+                    <EditForm Model="@contactMessage" OnValidSubmit="@HandleValidSubmit" class="contact-form bv-form" id="contact_form">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="form-group has-feedback">
+                            <InputText class="form-control" id="fname" placeholder="Name*" @bind-Value="contactMessage.Name" />
+                        </div>
+                        <div class="form-group mar-top-40 has-feedback">
+                            <InputText class="form-control" id="email" placeholder="Email*" @bind-Value="contactMessage.Email" />
+                        </div>
+                        <div class="form-group mar-top-60 has-feedback">
+                            <InputTextArea rows="10" class="form-control" id="comment" placeholder="Your Message" data-bv-field="comment" @bind-Value="contactMessage.Message" />
+                        </div>
+                        <button type="submit" class="btn v7">Submit</button>
+                    </EditForm>
+                }
             </div>
             <div class="col-md-5 offset-md-1">
                 <div class="contact-content">
@@ -52,27 +59,23 @@
 @code {
     private ContactMessage contactMessage = new ContactMessage("", "", "");
     private EditContext? editContext;
-
+    private bool messageSent;
     protected override void OnInitialized()
     {
         editContext = new(contactMessage);
     }
-    private async Task<string> HandleValidSubmit(EditContext editContext)
+    private async Task HandleValidSubmit(EditContext editContext)
     {
-        try
+        var content = JsonSerializer.Serialize(editContext.Model);
+        var buffer = System.Text.Encoding.UTF8.GetBytes(content);
+        var byteContent = new ByteArrayContent(buffer);
+        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        var response = await Http.PostAsync("/api/ContactFunction", byteContent);
+        if (response.IsSuccessStatusCode)
         {
-            var content = JsonSerializer.Serialize(editContext.Model);
-            var buffer = System.Text.Encoding.UTF8.GetBytes(content);
-            var byteContent = new ByteArrayContent(buffer);
-            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            messageSent = true;
+        }
 
-            await Http.PostAsync("/api/ContactFunction", byteContent);
-            return "Success";
-        }
-        catch (Exception ex)
-        {
-            return "Failure";
-        }
     }
-    
+
 }
