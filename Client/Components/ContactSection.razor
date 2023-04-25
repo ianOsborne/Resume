@@ -10,12 +10,6 @@
         <h3 class="block-title">Get in touch</h3>
         <div class="row">
             <div class="col-md-6">
-                @if (LastSubmitResult != null)
-                {
-                    <h2>
-                        Last submit status: @LastSubmitResult
-                    </h2>
-                }
                 <EditForm Model="@contactMessage" OnValidSubmit="@HandleValidSubmit" class="contact-form bv-form" id="contact_form">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
@@ -57,7 +51,6 @@
 
 @code {
     private ContactMessage contactMessage = new ContactMessage("", "", "");
-    string LastSubmitResult;
     private EditContext? editContext;
 
     protected override void OnInitialized()
@@ -74,23 +67,12 @@
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             await Http.PostAsync("/api/ContactFunction", byteContent);
-            ValidFormSubmitted(editContext);
             return "Success";
         }
         catch (Exception ex)
         {
-            InvalidFormSubmitted(editContext);
             return "Failure";
         }
-    }
-    void ValidFormSubmitted(EditContext editContext)
-    {
-        LastSubmitResult = "OnValidSubmit was executed";
-    }
-
-    void InvalidFormSubmitted(EditContext editContext)
-    {
-        LastSubmitResult = "OnInvalidSubmit was executed";
     }
     
 }

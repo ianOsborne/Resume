@@ -45,9 +45,9 @@ namespace ApiIsolated
             };
             MailMessage message = new MailMessage();
             message.From = new MailAddress("ianosborne.dev@gmail.com");
-            message.To.Add("mail@ianosborne.dev");
-            message.Body = contactMessage.Name + " " + contactMessage.Email + " " + contactMessage.Message;
-            message.Subject = "Resume Website Contact";
+            message.To.Add("ian.cosborne@yahoo.com");
+            message.Body = contactMessage.Name + " \n " + contactMessage.Email + " \n " + contactMessage.Message;
+            message.Subject = "Resume Website";
             smtpClient.Send(message);
         }
 
