@@ -12,9 +12,7 @@
             <div class="col-md-6">
                 @if (messageSent)
                 {
-                    <span>Thank you, your message has been received.</span>
-                }else if (sendingMessage){
-                    <p>Sending your message...</p>
+                    <h2>Thank you, your message has been received.</h2>
                 }
                 else
                 {
@@ -62,14 +60,12 @@
     private ContactMessage contactMessage = new ContactMessage("", "", "");
     private EditContext? editContext;
     private bool messageSent;
-    private bool sendingMessage;
     protected override void OnInitialized()
     {
         editContext = new(contactMessage);
     }
     private async Task HandleValidSubmit(EditContext editContext)
     {
-        sendingMessage = true;
         var content = JsonSerializer.Serialize(editContext.Model);
         var buffer = System.Text.Encoding.UTF8.GetBytes(content);
         var byteContent = new ByteArrayContent(buffer);
