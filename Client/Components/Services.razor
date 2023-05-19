@@ -1,0 +1,61 @@
+﻿@using ResumeWebsite.Shared
+<div class="container-fluid pt-5" id="service">
+    <div class="container">
+        <div class="position-relative d-flex align-items-center justify-content-center">
+            <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Services</h1>
+            <h1 class="position-absolute text-uppercase text-primary">My Services</h1>
+        </div>
+        <div class="row pb-3">
+            <div class="col-lg-4 col-md-6 text-center mb-5">
+                <div class="d-flex align-items-center justify-content-center mb-4">
+                    <i class="fa fa-2x fa-laptop service-icon bg-primary text-white mr-3"></i>
+                    <h4 class="font-weight-bold m-0">Web Development</h4>
+                </div>
+                <p>I enjoy creating websites, especially websites that need complicated functionality, whether it be for small businesses or enterprise clients.</p>
+            </div>
+            <div class="col-lg-4 col-md-6 text-center mb-5">
+                <div class="d-flex align-items-center justify-content-center mb-4">
+                    <i class="fa fa-2x fa-search service-icon bg-primary text-white mr-3"></i>
+                    <h4 class="font-weight-bold m-0">SEO</h4>
+                </div>
+                <p>What good is a website if it doesn't show up in search engines? During my time creating websites for others I have had to learn the ins and outs of search engine optimization in order to provide a quality product.</p>
+            </div>
+            <div class="col-lg-4 col-md-6 text-center mb-5">
+                <div class="d-flex align-items-center justify-content-center mb-4">
+                    <i class="fa fa-2x fa-laptop-code service-icon bg-primary text-white mr-3"></i>
+                    <h4 class="font-weight-bold m-0">Application Design</h4>
+                </div>
+                <p>I believe planning to be more important that execution. That is why I love to plan and design applications in the cleanest and most object oriented ways possible.</p>
+            </div>
+            <div class="col-lg-4 col-md-6 text-center mb-5">
+                <div class="d-flex align-items-center justify-content-center mb-4">
+                    <i class="fa fa-2x fa-server service-icon bg-primary text-white mr-3"></i>
+                    <h4 class="font-weight-bold m-0">Hardware Repair</h4>
+                </div>
+                <p>Growing up, I have always been curious about the inner workings of various things, especially electronics, and have learned to troubleshoot and repair anything I have come into contact with.</p>
+            </div>
+            <div class="col-lg-4 col-md-6 text-center mb-5">
+                <div class="d-flex align-items-center justify-content-center mb-4">
+                    <i class="fa fa-2x fa-edit service-icon bg-primary text-white mr-3"></i>
+                    <h4 class="font-weight-bold m-0">Content Creation</h4>
+                </div>
+                <p>I can manage social media pages and create fresh new content that appeals to target demographics</p>
+            </div>
+            <div class="col-lg-4 col-md-6 text-center mb-5">
+                <div class="d-flex align-items-center justify-content-center mb-4">
+                    <i class="fa fa-2x fa-microphone service-icon bg-primary text-white mr-3"></i>
+                    <h4 class="font-weight-bold m-0">Professional Audio</h4>
+                </div>
+                <p>I have learned how to record and mix professional audio as a hobby. I am able to record and mix high quality podcasts, songs, and sound effects.</p>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    private IEnumerable<Service> ServiceList = new List<Service>()
+    {
+        new Service("Web Design", "I create functional websites to meet the needs of both enterprise level clients and small business owners alike."),
+        new Service("App Development", "I am always on the lookout for new development opportunities, and would love to bring your dream app to life!"),
+        new Service("Graphic Design", "I love expressing myself through creative outlets, such as designing logos, banners, branding, etc."),
+    };
+}

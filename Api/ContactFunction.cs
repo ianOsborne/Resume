@@ -26,11 +26,11 @@ namespace ApiIsolated
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential("ianosborne.dev@gmail.com", Environment.GetEnvironmentVariable("MailPassword")),
             };
-            MailMessage message = new MailMessage();
+            MailMessage message = new();
             message.From = new MailAddress("ianosborne.dev@gmail.com");
             message.To.Add("ian.cosborne@yahoo.com");
             message.Body = contactMessage.Name + " \n " + contactMessage.Email + " \n " + contactMessage.Message;
-            message.Subject = "Resume Website";
+            message.Subject = contactMessage.Subject;
             smtpClient.Send(message);
         }
     }

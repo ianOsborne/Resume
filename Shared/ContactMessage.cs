@@ -11,12 +11,9 @@ namespace ResumeWebsite.Shared
         public string Email { get; set; }
         [Required]
         public string Message { get; set; }
+        [Required]
+        public string Subject { get; set; }
 
-        public ContactMessage(string name, string email, string message)
-        {
-            Name = name;
-            Email = email;
-            Message = message;
-        }
+       
     }
 }

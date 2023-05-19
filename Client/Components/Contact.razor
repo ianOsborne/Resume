@@ -1,0 +1,85 @@
+﻿@using ResumeWebsite.Shared;
+@using System.Net.Mail;
+@using System.Net;
+@using System.Text.Json;
+@using System.Net.Http.Headers;
+@using System.Text;
+@inject HttpClient Http
+
+<div class="container-fluid py-5" id="contact">
+    <div class="container">
+        <div class="position-relative d-flex align-items-center justify-content-center">
+            <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Contact</h1>
+            <h1 class="position-absolute text-uppercase text-primary">Contact Me</h1>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="contact-form text-center">
+                    @if (messageSent)
+                    {
+                        <div id="success"></div>
+                        <span>Thank you, your message has been received.</span>
+                    }
+                    else if (sendingMessage)
+                    {
+                        <p>Sending your message...</p>
+                    }
+                    else
+                    {
+                        <EditForm Model="@contactMessage" OnValidSubmit="@HandleValidSubmit" name="sentMessage" id="contactForm">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <div class="form-row">
+                                <div class="control-group col-sm-6">
+                                    <InputText class="form-control p-4" id="name" placeholder="Your Name" required="required" @bind-Value="contactMessage.Name" />
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="control-group col-sm-6">
+                                    <InputText type="email" class="form-control p-4" id="email" placeholder="Your Email" required="required" @bind-Value="contactMessage.Email" />
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <InputText type="text" class="form-control p-4" id="subject" placeholder="Subject" required="required" @bind-Value="contactMessage.Subject" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group">
+                                <InputTextArea class="form-control py-3 px-4" rows="5" id="message" placeholder="Message" required="required" @bind-Value="contactMessage.Message"></InputTextArea>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-primary" type="submit" id="sendMessageButton">
+                                    Send
+                                    Message
+                                </button>
+                            </div>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    private ContactMessage contactMessage = new();
+    private EditContext? editContext;
+    private bool messageSent;
+    private bool sendingMessage;
+    protected override void OnInitialized()
+    {
+        editContext = new(contactMessage);
+    }
+    private async Task HandleValidSubmit(EditContext editContext)
+    {
+        sendingMessage = true;
+        var content = new ByteArrayContent(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(editContext.Model)));
+        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        var response = await Http.PostAsync("/api/ContactFunction", content);
+        if (response.IsSuccessStatusCode)
+        {
+            messageSent = true;
+        }
+
+    }
+
+}
