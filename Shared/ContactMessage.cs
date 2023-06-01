@@ -13,7 +13,5 @@ namespace ResumeWebsite.Shared
         public string Message { get; set; }
         [Required]
         public string Subject { get; set; }
-
-       
     }
 }

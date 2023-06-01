@@ -19,6 +19,7 @@ namespace ApiIsolated
         }
         public void SendMail(ContactMessage contactMessage)
         {
+           
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var smtpClient = new SmtpClient("smtp.gmail.com", 587)
             {
